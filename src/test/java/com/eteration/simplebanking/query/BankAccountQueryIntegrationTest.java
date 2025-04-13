@@ -3,6 +3,7 @@ package com.eteration.simplebanking.query;
 import com.eteration.simplebanking.entity.BankAccount;
 import com.eteration.simplebanking.repository.BankAccountRepository;
 import com.eteration.simplebanking.query.dto.AccountView;
+import com.eteration.simplebanking.query.dto.PagedTransactionView;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class BankAccountQueryIntegrationTest {
 
     @BeforeEach
     public void setup() {
-        BankAccount account = repository.findById("12345").orElseThrow();
+        BankAccount account = repository.findById("669-7788").orElseThrow();
         account.setBalance(1000.0);
         repository.save(account);
     }
@@ -33,11 +34,11 @@ public class BankAccountQueryIntegrationTest {
     @Test
     public void testGetAccountSuccess() {
         ResponseEntity<AccountView> response = restTemplate.getForEntity(
-                baseUrl + "/12345", AccountView.class);
+                baseUrl + "/669-7788", AccountView.class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        assertEquals("12345", response.getBody().getAccountNumber());
+        assertEquals("669-7788", response.getBody().getAccountNumber());
         assertEquals(1000.0, response.getBody().getBalance(), 0.0001);
     }
 
@@ -47,5 +48,21 @@ public class BankAccountQueryIntegrationTest {
                 baseUrl + "/not-found", String.class);
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+    }
+
+    @Test
+    public void testPaginatedTransactionQuery() {
+        ResponseEntity<PagedTransactionView> response = restTemplate.exchange(
+                "/account/v1/669-7788/transactions?page=0&size=2",
+                HttpMethod.GET,
+                null,
+                PagedTransactionView.class
+        );
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("669-7788", response.getBody().getAccountNumber());
+        assertEquals(0, response.getBody().getPage());
+        assertEquals(2, response.getBody().getSize());
     }
 }

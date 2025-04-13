@@ -1,23 +1,23 @@
 databaseChangeLog:
   - changeSet:
       id: 02
-      author: goktug
+      author: goktugbati
       changes:
         - insert:
             tableName: bank_account
             columns:
               - column:
                   name: account_number
-                  value: 12345
+                  value: 669-7788
               - column:
                   name: owner
-                  value: Jim
+                  value: Kerem Karaca
               - column:
                   name: balance
-                  valueNumeric: 1000.00
+                  valueNumeric: 950.00
               - column:
                   name: create_date
-                  value: 2023-01-01T10:00:00.000Z
+                  value: 2020-03-26T06:15:50.550+0000
               - column:
                   name: version
                   valueNumeric: 0

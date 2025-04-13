@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/01-init-schema.yaml
   - include:
       file: db/changelog/02-add-test-accounts.yaml
+  - include:
+      file: db/changelog/03-outbox-table.yaml

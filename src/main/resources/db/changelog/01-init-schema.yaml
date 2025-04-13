@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: 01
-      author: goktug
+      author: goktugbati
       changes:
         - createTable:
             tableName: bank_account

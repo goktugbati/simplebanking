@@ -32,7 +32,7 @@ public class BankAccountCommandIntegrationTest {
 
     @BeforeEach
     public void resetAccount() {
-        BankAccount account = accountRepository.findById("12345").orElseThrow();
+        BankAccount account = accountRepository.findById("669-7788").orElseThrow();
         account.setBalance(1000.0);
         accountRepository.save(account);
     }
@@ -40,18 +40,18 @@ public class BankAccountCommandIntegrationTest {
     @Test
     public void testCreditEndpoint() {
         CreditRequest request = new CreditRequest();
-        request.setAmount(200.0);
+        request.setAmount(1000.0);
 
         ResponseEntity<CommandResponse> response = restTemplate.postForEntity(
-                BASE_URL + "/credit/12345", request, CommandResponse.class
+                BASE_URL + "/credit/669-7788", request, CommandResponse.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
         assertEquals("OK", response.getBody().getStatus());
 
-        BankAccount account = accountRepository.findById("12345").orElseThrow();
-        assertEquals(1200.0, account.getBalance(), 0.0001);
+        BankAccount account = accountRepository.findById("669-7788").orElseThrow();
+        assertEquals(1950.0, account.getBalance(), 0.0001);
     }
 
     @Test
@@ -60,11 +60,11 @@ public class BankAccountCommandIntegrationTest {
         request.setAmount(300.0);
 
         ResponseEntity<CommandResponse> response = restTemplate.postForEntity(
-                BASE_URL + "/debit/12345", request, CommandResponse.class
+                BASE_URL + "/debit/669-7788", request, CommandResponse.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
-        BankAccount account = accountRepository.findById("12345").orElseThrow();
+        BankAccount account = accountRepository.findById("669-7788").orElseThrow();
         assertEquals(700.0, account.getBalance(), 0.0001);
     }
 
@@ -74,7 +74,7 @@ public class BankAccountCommandIntegrationTest {
         request.setAmount(2000.0);
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-                BASE_URL + "/debit/12345", request, String.class
+                BASE_URL + "/debit/669-7788", request, String.class
         );
 
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
@@ -87,12 +87,12 @@ public class BankAccountCommandIntegrationTest {
         request.setAmount(100.0);
 
         ResponseEntity<CommandResponse> response = restTemplate.postForEntity(
-                BASE_URL + "/paybill/12345", request, CommandResponse.class
+                BASE_URL + "/paybill/669-7788", request, CommandResponse.class
         );
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertNotNull(response.getBody());
-        BankAccount account = accountRepository.findById("12345").orElseThrow();
+        BankAccount account = accountRepository.findById("669-7788").orElseThrow();
         assertEquals(900.0, account.getBalance(), 0.0001);
     }
 }
