@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 01
+      author: goktug
+      changes:
+        - createTable:
+            tableName: bank_account
+            columns:
+              - column:
+                  name: account_number
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: owner
+                  type: varchar(255)
+              - column:
+                  name: balance
+                  type: double
+              - column:
+                  name: create_date
+                  type: varchar(255)
+              - column:
+                  name: version
+                  type: bigint
