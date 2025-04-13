@@ -40,7 +40,7 @@ public class BankAccountCommandIntegrationTest {
     @Test
     public void testCreditEndpoint() {
         CreditRequest request = new CreditRequest();
-        request.setAmount(1000.0);
+        request.setAmount(1000.00);
 
         ResponseEntity<CommandResponse> response = restTemplate.postForEntity(
                 BASE_URL + "/credit/669-7788", request, CommandResponse.class
@@ -51,7 +51,7 @@ public class BankAccountCommandIntegrationTest {
         assertEquals("OK", response.getBody().getStatus());
 
         BankAccount account = accountRepository.findById("669-7788").orElseThrow();
-        assertEquals(1950.0, account.getBalance(), 0.0001);
+        assertEquals(2000.00, account.getBalance(), 0.0001);
     }
 
     @Test

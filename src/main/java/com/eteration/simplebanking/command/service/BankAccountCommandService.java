@@ -5,12 +5,10 @@ import com.eteration.simplebanking.entity.BankAccount;
 import com.eteration.simplebanking.entity.BillPaymentTransaction;
 import com.eteration.simplebanking.entity.DepositTransaction;
 import com.eteration.simplebanking.entity.WithdrawalTransaction;
-import com.eteration.simplebanking.event.AccountEvent;
 import com.eteration.simplebanking.outbox.OutboxEvent;
 import com.eteration.simplebanking.outbox.OutboxEventRepository;
 import com.eteration.simplebanking.repository.BankAccountRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

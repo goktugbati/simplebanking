@@ -14,7 +14,7 @@ databaseChangeLog:
                   value: Kerem Karaca
               - column:
                   name: balance
-                  valueNumeric: 950.00
+                  valueNumeric: 1000.00
               - column:
                   name: create_date
                   value: 2020-03-26T06:15:50.550+0000

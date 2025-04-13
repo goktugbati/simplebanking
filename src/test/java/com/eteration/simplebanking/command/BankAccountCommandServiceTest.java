@@ -3,10 +3,14 @@ package com.eteration.simplebanking.command;
 import com.eteration.simplebanking.command.dto.CommandResponse;
 import com.eteration.simplebanking.command.service.BankAccountCommandService;
 import com.eteration.simplebanking.entity.BankAccount;
+import com.eteration.simplebanking.outbox.OutboxEventRepository;
 import com.eteration.simplebanking.repository.BankAccountRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -18,18 +22,21 @@ public class BankAccountCommandServiceTest {
     @Mock
     private BankAccountRepository bankAccountRepository;
 
+    @Mock
+    private OutboxEventRepository outboxEventRepository;
+
     private BankAccount mockAccount;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        mockAccount = new BankAccount("Jim", "12345");
-        when(bankAccountRepository.findById("12345")).thenReturn(java.util.Optional.of(mockAccount));
+        mockAccount = new BankAccount("Jim", "669-7788");
+        when(bankAccountRepository.findById("669-7788")).thenReturn(Optional.of(mockAccount));
     }
 
     @Test
     public void testCredit() {
-        CommandResponse response = commandService.credit("12345", 100.0);
+        CommandResponse response = commandService.credit("669-7788", 100.0);
 
         assertEquals("OK", response.getStatus());
         assertEquals(100.0, mockAccount.getBalance());
@@ -40,7 +47,7 @@ public class BankAccountCommandServiceTest {
     public void testDebit() {
         mockAccount.credit(200.0); // preload balance
 
-        CommandResponse response = commandService.debit("12345", 50.0);
+        CommandResponse response = commandService.debit("669-7788", 50.0);
 
         assertEquals("OK", response.getStatus());
         assertEquals(150.0, mockAccount.getBalance());
@@ -50,7 +57,7 @@ public class BankAccountCommandServiceTest {
     @Test
     public void testDebit_InsufficientFunds() {
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
-            commandService.debit("12345", 50.0);
+            commandService.debit("669-7788", 50.0);
         });
         assertEquals("Insufficient funds.", ex.getMessage());
     }
@@ -59,7 +66,7 @@ public class BankAccountCommandServiceTest {
     public void testPayBill() {
         mockAccount.credit(500.0);
 
-        CommandResponse response = commandService.payBill("12345", "Netflix", 100.0);
+        CommandResponse response = commandService.payBill("669-7788", "Netflix", 100.0);
 
         assertEquals("OK", response.getStatus());
         assertEquals(400.0, mockAccount.getBalance());
@@ -69,7 +76,7 @@ public class BankAccountCommandServiceTest {
     @Test
     public void testPayBill_InsufficientFunds() {
         Exception ex = assertThrows(IllegalArgumentException.class, () -> {
-            commandService.payBill("12345", "Spotify", 100.0);
+            commandService.payBill("669-7788", "Spotify", 100.0);
         });
         assertEquals("Insufficient funds.", ex.getMessage());
     }
