@@ -173,7 +173,7 @@ com.eteration.simplebanking
 ├── event
 ├── kafka
 ├── outbox
-├── model
+├── entity
 ├── repository
 └── ...
 ```
